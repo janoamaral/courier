@@ -31,7 +31,6 @@ func main() {
 	}
 	requestBody.Data = string(bodyBytes)
 
-
 	jsonBody, err := json.Marshal(requestBody)
 	if err != nil {
 		log.Fatalf("Error marshaling JSON: %v", err)
@@ -43,9 +42,14 @@ func main() {
 	}
 	defer resp.Body.Close()
 
-	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusCreated { //Handle various success codes
+	if resp.StatusCode != http.StatusOK &&
+		resp.StatusCode != http.StatusCreated { // Handle various success codes
 		bodyBytes, _ := io.ReadAll(resp.Body)
-		log.Fatalf("POST request failed with status code %d: %s", resp.StatusCode, string(bodyBytes))
+		log.Fatalf(
+			"POST request failed with status code %d: %s",
+			resp.StatusCode,
+			string(bodyBytes),
+		)
 	}
 
 	fmt.Printf("POST request successful. Status code: %d\n", resp.StatusCode)
